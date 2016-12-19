@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<svg version="1.1" xmls="http://www.w3.org/2000/svg" xmls:xlinl="http://www.w3.org/1999/xlink" width="400" height="400" x="0" y="0" viewBox="0 0 400 400">
+		<path id="path" stroke-width="2" fill="none" stroke="black" d="M0,200 Q100,100 200,200" />
+		
+	</svg>
+	<script type="text/javascript">
+	window.onload = function() {
+		//求y=x * x ,在0<x<1上的曲线长度
+		//均匀插值
+		// var l = 0;
+		// var points = [];
+		// for (var i = 0; i <= 2 / 0.001; i++) {
+		// 	var point = {
+		// 		x: 0.001 * i,
+		// 		y: 0.001 * i * 0.001 * i
+		// 	}
+		// 	points.push(point);
+		// };
+		// //求和
+		// for (var i = 0; i < points.length - 1; i++) {
+			
+		// 	var del = Math.sqrt((points[i + 1].x - points[i].x) * (points[i + 1].x - points[i].x) + (points[i + 1].y - points[i].y) * (points[i + 1].y - points[i].y));
+			
+		// 	l += del;
+		// };
+
+		// console.log(l);
+
+		//求二次贝塞尔曲线的长度
+		var path = document.getElementById("path");
+		var d = path.getAttribute("d");
+		var p0x = 0, p0y = 200;
+		var p1x = 100, p1y = 100;
+		var p2x = 200, p2y = 200;
+		var L = 0;
+		var points = [];
+		for (var i = 0; i <= 1 / 0.0001; i++) {
+			points.push(i * 0.0001);
+		};
+		console.log(points)
+		var x1, y1, x2, y2;
+		x1 = p0x;
+		y1 = p0y;
+		for (var i = 0; i < points.length - 1; i++) {
+			x2 = (1 - points[i]) * (1 - points[i]) * p0x + 2 * (1 - points[i]) * points[i] * p1x + points[i] * points[i] * p2x;
+			y2 = (1 - points[i]) * (1 - points[i]) * p0y + 2 * (1 - points[i]) * points[i] * p1y + points[i] * points[i] * p2y;
+			// x2 = (1 - points[i + 1]) * (1 - points[i + 1]) * p0x - 2 * (1 - points[i + 1]) * points[i + 1] * p1x + points[i + 1] * points[i + 1] * p2x;
+			// y2 = (1 - points[i + 1]) * (1 - points[i + 1]) * p0y - 2 * (1 - points[i + 1]) * points[i + 1] * p1y + points[i + 1] * points[i + 1] * p2y;
+			// console.log(x1 + " " + y1 + " " + x2 + " " + y2)
+			del = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+			x1 = x2;
+			y1 = y2;
+
+			L += del;
+		};
+
+		console.log(L);
+		console.log(path.getTotalLength())
+	}
+	</script>
+</body>
+</html>
